@@ -39,11 +39,11 @@ class AgentState(TypedDict):
 AGENT_LLM_TIMEOUT = int(os.getenv("AGENT_LLM_TIMEOUT", "10"))
 llm = ChatOpenAI(
     model=os.getenv("PIONEER_MODEL_NAME", "meta-llama/Llama-3.3-70B-Instruct"),
-    api_key=os.getenv("PIONEER_API_KEY", ""),
+    api_key=os.getenv("PIONEER_API_KEY") or os.getenv("OPENAI_API_KEY", ""),
     base_url=os.getenv("PIONEER_BASE_URL", "https://api.pioneer.ai/v1"),
-    temperature=0.1,             # low temp = consistent risk verdicts
+    temperature=0.1,
     request_timeout=AGENT_LLM_TIMEOUT,
-    max_retries=0,               # we handle retries ourselves with backoff
+    max_retries=0,
 )
 
 # ── Composio Slack tool (lazy-loaded — avoids init hang without creds) ──
